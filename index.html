@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aryan Karki — Software Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0c0c0c;
+      --surface: #141414;
+      --surface2: #1a1a1a;
+      --border: #222;
+      --border2: #2e2e2e;
+      --text: #d4d4d4;
+      --text-dim: #555;
+      --text-mid: #888;
+      --accent: #e8e8e8;
+      --green: #4ade80;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    .container { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+
+    /* Nav */
+    nav {
+      position: sticky; top: 0; z-index: 99;
+      background: rgba(12,12,12,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 720px; margin: 0 auto; padding: 0 28px;
+      display: flex; justify-content: space-between; align-items: center; height: 56px;
+    }
+    .nav-name { font-family: var(--mono); font-size: 13px; color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+    .nav-name:hover { opacity: 0.7; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: 11px; color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* Hero */
+    .hero { padding: 72px 0 64px; border-bottom: 1px solid var(--border); animation: fadeUp 0.7s 0.05s ease both; }
+    .hero-inner { display: block; }
+    .status {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; color: var(--text-dim);
+      margin-bottom: 24px; background: var(--surface); border: 1px solid var(--border);
+      padding: 6px 12px; border-radius: 99px;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(74,222,128,0.4); }
+      50% { opacity:0.7; box-shadow: 0 0 0 5px rgba(74,222,128,0); }
+    }
+    .hero-title {
+      font-size: clamp(26px, 4.5vw, 38px); font-weight: 300;
+      color: var(--accent); line-height: 1.2; margin-bottom: 18px; letter-spacing: -0.02em;
+    }
+    .hero-title span { color: var(--text-mid); }
+    .hero-desc { font-size: 14px; color: var(--text-mid); line-height: 1.85; max-width: 460px; }
+
+    /* Profile photo */
+
+
+    /* Section */
+    .section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+    .section-label {
+      font-family: var(--mono); font-size: 10px; color: var(--text-dim);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before { content: '/'; color: var(--border2); }
+    .section-label::after { content: ''; flex:1; height:1px; background: var(--border); }
+
+    /* About */
+    .about-text { font-size: 15px; color: var(--text-mid); line-height: 1.85; }
+    .about-text + .about-text { margin-top: 14px; }
+
+    /* Tech */
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tech-tag {
+      font-family: var(--mono); font-size: 11px; color: var(--text-mid);
+      border: 1px solid var(--border); padding: 6px 14px; border-radius: 3px;
+      transition: color 0.2s, border-color 0.2s, background 0.2s; cursor: default;
+    }
+    .tech-tag:hover { color: var(--accent); border-color: #3a3a3a; background: var(--surface2); }
+
+    /* Projects */
+    .projects-grid { display: flex; flex-direction: column; }
+    .project-card {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .project-card:first-child { border-top: 1px solid var(--border); }
+
+    /* Inline icon */
+    .project-icon { width: 14px; height: 14px; opacity: 0.5; flex-shrink: 0; margin-right: 8px; }
+
+    /* Badge */
+    .project-badge {
+      font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 99px; border: 1px solid;
+    }
+    .project-badge.live   { color: var(--green); border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
+    .project-badge.wip    { color: #f5a623; border-color: rgba(245,166,35,0.3); background: rgba(245,166,35,0.08); }
+    .project-badge.contrib{ color: #7cb9e8; border-color: rgba(124,185,232,0.3); background: rgba(124,185,232,0.08); }
+
+    /* Card body */
+    .project-body { }
+    .project-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+    .project-name { font-size: 15px; font-weight: 400; color: var(--accent); letter-spacing: -0.01em; }
+    a.project-name:hover { opacity: 0.75; }
+    .project-link {
+      font-family: var(--mono); font-size: 11px; color: var(--text-dim);
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: color 0.2s; white-space: nowrap; margin-left: 16px; padding-top: 2px; cursor: pointer;
+    }
+    .project-link:hover { color: var(--accent); }
+    .project-desc { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 14px; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .project-tag {
+      font-family: var(--mono); font-size: 10px; color: var(--text-dim);
+      background: var(--bg); border: 1px solid var(--border); padding: 2px 9px; border-radius: 2px;
+    }
+
+    /* Footer */
+    footer { padding: 36px 0 52px; display: flex; justify-content: space-between; align-items: center; }
+    footer p { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+    .footer-links a { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* Animations */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+
+    @media (max-width: 520px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-photo { width: 80px; height: 80px; }
+
+      footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-name">Aryan Karki</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#tech">Tech</a></li>
+      <li><a href="#projects">Projects</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="status"><span class="status-dot"></span>Available for work</div>
+        <h1 class="hero-title">Aryan Karki —<br><span>Software Developer.</span></h1>
+        <p class="hero-desc">I'm a software developer from Kathmandu, Nepal. I have interest in Full Stack Development, Artificial Intelligence, Machine Learning and everything in between.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section class="section reveal" id="about">
+    <div class="section-label">about me</div>
+    <p class="about-text">Based in Kathmandu, Nepal, I build software that is clean, purposeful, and efficient. I enjoy working across the full stack — from crafting thoughtful UIs to designing robust backend systems.</p>
+    <p class="about-text">Outside of work, I'm always following new technology and exploring what's next. I listen to podcasts and watch movies and series in my free time.</p>
+  </section>
+
+  <!-- Tech -->
+  <section class="section reveal" id="tech">
+    <div class="section-label">technology</div>
+    <div class="tech-grid">
+      <span class="tech-tag">HTML</span>
+      <span class="tech-tag">CSS</span>
+      <span class="tech-tag">JavaScript</span>
+      <span class="tech-tag">Java</span>
+      <span class="tech-tag">Git</span>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section reveal" id="projects">
+    <div class="section-label">projects</div>
+    <div class="projects-grid">
+
+      <!-- Shangrila Globe Travels -->
+      <div class="project-card reveal">
+        <div class="project-body">
+          <div class="project-meta">
+            <div class="project-name" style="display:flex;align-items:center;">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="28" cy="28" r="18" stroke="#d4d4d4" stroke-width="2.5"/>
+                <ellipse cx="28" cy="28" rx="8" ry="18" stroke="#d4d4d4" stroke-width="2.5"/>
+                <line x1="10" y1="28" x2="46" y2="28" stroke="#d4d4d4" stroke-width="2"/>
+                <path d="M12 20 Q28 24 44 20" stroke="#d4d4d4" stroke-width="2" fill="none"/>
+                <path d="M12 36 Q28 32 44 36" stroke="#d4d4d4" stroke-width="2" fill="none"/>
+              </svg>
+              Shangrila Globe Travels
+            </div>
+            <a href="https://shangrilaglobetravels.edgeone.app" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <p class="project-desc">A full-featured website for a trekking &amp; tour agency in Kathmandu, Nepal. Built with multi-language support (EN, हिन्दी, 中文, 日本語, नेपाली), WhatsApp contact integration, and destinations across Nepal.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">EdgeOne</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nepal Kishan Organic Farm -->
+      <div class="project-card reveal">
+        <div class="project-body">
+          <div class="project-meta">
+            <div class="project-name" style="display:flex;align-items:center;">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M28 42 L28 22" stroke="#d4d4d4" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M28 30 Q18 26 16 16 Q26 14 32 22 Q34 26 28 30Z" stroke="#d4d4d4" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                <path d="M28 36 Q38 32 40 20 Q30 18 24 28 Q22 32 28 36Z" stroke="#d4d4d4" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+              </svg>
+              Nepal Kishan Organic Farm
+            </div>
+            <a href="https://nepalkishanorg.edgeone.app/" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <p class="project-desc">Building a website for an organic farming business based in Nepal. Designed to showcase their products, farming practices, and connect local consumers with fresh organic produce.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logistic Automation -->
+      <div class="project-card reveal">
+        <div class="project-body">
+          <div class="project-meta">
+            <div class="project-name" style="display:flex;align-items:center;">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="18" width="28" height="20" rx="1.5" stroke="#d4d4d4" stroke-width="2.5"/>
+                <path d="M34 24 L50 24 L50 38 L34 38" stroke="#d4d4d4" stroke-width="2.5" stroke-linejoin="round"/>
+                <path d="M34 24 L42 18 L50 24" stroke="#d4d4d4" stroke-width="2.5" stroke-linejoin="round"/>
+                <circle cx="14" cy="40" r="4" stroke="#d4d4d4" stroke-width="2.5"/>
+                <circle cx="42" cy="40" r="4" stroke="#d4d4d4" stroke-width="2.5"/>
+              </svg>
+              Logistic Automation
+            </div>
+            <a href="http://103.198.9.185/auth/login" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <p class="project-desc">Contributed to a logistic automation web application by identifying bugs, tracing errors, and implementing fixes. Involved in debugging authentication flows and improving overall system stability.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">Debugging</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Aryan Karki · Kathmandu, Nepal</p>
+    <div class="footer-links">
+      <a href="https://github.com/txtaryann-dev" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        github.com/txtaryann-dev
+      </a>
+      <a href="https://instagram.com/aryan.txtt" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @aryan.txtt
+      </a>
+      <a href="mailto:txt.aryann@gmail.com">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        txt.aryann@gmail.com
+      </a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.style.transitionDelay = (i * 0.07) + 's';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
