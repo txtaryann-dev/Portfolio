@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,8 +32,6 @@
       overflow-x: hidden;
     }
     .container { max-width: 720px; margin: 0 auto; padding: 0 28px; }
-
-    /* Nav */
     nav {
       position: sticky; top: 0; z-index: 99;
       background: rgba(12,12,12,0.92);
@@ -45,13 +42,10 @@
       max-width: 720px; margin: 0 auto; padding: 0 28px;
       display: flex; justify-content: space-between; align-items: center; height: 56px;
     }
-    .nav-name { font-family: var(--mono); font-size: 13px; color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
-    .nav-name:hover { opacity: 0.7; }
+    .nav-name { font-family: var(--mono); font-size: 13px; color: var(--accent); text-decoration: none; }
     .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a { font-family: var(--mono); font-size: 11px; color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--accent); }
-
-    /* Hero */
     .hero { padding: 72px 0 64px; border-bottom: 1px solid var(--border); animation: fadeUp 0.7s 0.05s ease both; }
     .hero-inner { display: block; }
     .status {
@@ -74,11 +68,6 @@
     }
     .hero-title span { color: var(--text-mid); }
     .hero-desc { font-size: 14px; color: var(--text-mid); line-height: 1.85; max-width: 460px; }
-
-    /* Profile photo */
-
-
-    /* Section */
     .section { padding: 60px 0; border-bottom: 1px solid var(--border); }
     .section-label {
       font-family: var(--mono); font-size: 10px; color: var(--text-dim);
@@ -87,12 +76,8 @@
     }
     .section-label::before { content: '/'; color: var(--border2); }
     .section-label::after { content: ''; flex:1; height:1px; background: var(--border); }
-
-    /* About */
     .about-text { font-size: 15px; color: var(--text-mid); line-height: 1.85; }
     .about-text + .about-text { margin-top: 14px; }
-
-    /* Tech */
     .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     .tech-tag {
       font-family: var(--mono); font-size: 11px; color: var(--text-mid);
@@ -100,19 +85,10 @@
       transition: color 0.2s, border-color 0.2s, background 0.2s; cursor: default;
     }
     .tech-tag:hover { color: var(--accent); border-color: #3a3a3a; background: var(--surface2); }
-
-    /* Projects */
     .projects-grid { display: flex; flex-direction: column; }
-    .project-card {
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-    }
+    .project-card { padding: 24px 0; border-bottom: 1px solid var(--border); }
     .project-card:first-child { border-top: 1px solid var(--border); }
-
-    /* Inline icon */
     .project-icon { width: 14px; height: 14px; opacity: 0.5; flex-shrink: 0; margin-right: 8px; }
-
-    /* Badge */
     .project-badge {
       font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
       text-transform: uppercase; padding: 3px 9px; border-radius: 99px; border: 1px solid;
@@ -120,8 +96,6 @@
     .project-badge.live   { color: var(--green); border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.08); }
     .project-badge.wip    { color: #f5a623; border-color: rgba(245,166,35,0.3); background: rgba(245,166,35,0.08); }
     .project-badge.contrib{ color: #7cb9e8; border-color: rgba(124,185,232,0.3); background: rgba(124,185,232,0.08); }
-
-    /* Card body */
     .project-body { }
     .project-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
     .project-name { font-size: 15px; font-weight: 400; color: var(--accent); letter-spacing: -0.01em; }
@@ -129,7 +103,7 @@
     .project-link {
       font-family: var(--mono); font-size: 11px; color: var(--text-dim);
       text-decoration: none; display: flex; align-items: center; gap: 4px;
-      transition: color 0.2s; white-space: nowrap; margin-left: 16px; padding-top: 2px; cursor: pointer;
+      transition: color 0.2s; white-space: nowrap; margin-left: 16px; padding-top: 2px;
     }
     .project-link:hover { color: var(--accent); }
     .project-desc { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 14px; }
@@ -138,23 +112,15 @@
       font-family: var(--mono); font-size: 10px; color: var(--text-dim);
       background: var(--bg); border: 1px solid var(--border); padding: 2px 9px; border-radius: 2px;
     }
-
-    /* Footer */
     footer { padding: 36px 0 52px; display: flex; justify-content: space-between; align-items: center; }
     footer p { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
-    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-    .footer-links a { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 6px; }
     .footer-links a:hover { color: var(--accent); }
-
-    /* Animations */
     .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-
     @media (max-width: 520px) {
-      .hero-inner { grid-template-columns: 1fr; }
-      .hero-photo { width: 80px; height: 80px; }
-
       footer { flex-direction: column; gap: 16px; align-items: flex-start; }
     }
   </style>
@@ -163,7 +129,7 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="#" class="nav-name">Aryan Karki</a>
+    <a href="/" class="nav-name">Aryan Karki</a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#tech">Tech</a></li>
@@ -208,6 +174,31 @@
   <section class="section reveal" id="projects">
     <div class="section-label">projects</div>
     <div class="projects-grid">
+
+      <!-- AINepal -->
+      <div class="project-card reveal">
+        <div class="project-body">
+          <div class="project-meta">
+            <div class="project-name" style="display:flex;align-items:center;">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="36" height="36" rx="6" stroke="#d4d4d4" stroke-width="2.5"/>
+                <path d="M20 36 L24 24 L28 32 L32 24 L36 36" stroke="#d4d4d4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <circle cx="28" cy="17" r="2.5" fill="#d4d4d4" opacity="0.6"/>
+              </svg>
+              AINepal
+            </div>
+            <a href="https://ainepal.edgeone.app/" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <p class="project-desc">Nepal's AI services guide — a curated directory connecting Nepali businesses with top AI freelancers. Features bilingual content (English &amp; Nepali), AI service categories, and a step-by-step hiring guide for local entrepreneurs.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">EdgeOne</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
 
       <!-- Shangrila Globe Travels -->
       <div class="project-card reveal">
