@@ -15,7 +15,7 @@ This portfolio is built with modern web technologies to ensure high performance,
 * **Deployment:** Vercel
 * **Icons & Assets:** Lucide React / React Icons
 
----
+----
 
 ## ✨ Features
 
