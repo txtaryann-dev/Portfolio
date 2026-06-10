@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Aryan — Software Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111;
+      --surface2: #161616;
+      --border: #1e1e1e;
+      --border2: #2a2a2a;
+      --text: #c8c8c8;
+      --text-dim: #4a4a4a;
+      --text-mid: #777;
+      --accent: #e2e2e2;
+      --green: #4ade80;
+      --cyan: #22d3ee;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* === CANVAS BACKGROUND === */
+    #matrix-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      opacity: 0.03;
+      pointer-events: none;
+    }
+
+    /* === FLOATING CODE SNIPPETS === */
+    .float-code {
+      position: fixed;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--cyan);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 0;
+      white-space: pre;
+      animation: floatUp linear infinite;
+      line-height: 1.7;
+    }
+    @keyframes floatUp {
+      0%   { opacity: 0; transform: translateY(0); }
+      10%  { opacity: 0.06; }
+      80%  { opacity: 0.06; }
+      100% { opacity: 0; transform: translateY(-120px); }
+    }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+    /* === NAV === */
+    nav {
+      position: sticky; top: 0; z-index: 99;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      max-width: 720px; margin: 0 auto; padding: 0 28px;
+      display: flex; justify-content: space-between; align-items: center; height: 56px;
+    }
+    .nav-name {
+      font-family: var(--mono); font-size: 13px; color: var(--accent);
+      text-decoration: none; display: flex; align-items: center; gap: 8px;
+    }
+    .nav-cursor {
+      display: inline-block; width: 8px; height: 14px;
+      background: var(--cyan); opacity: 0.8;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:0.8} 50%{opacity:0} }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-family: var(--mono); font-size: 11px; color: var(--text-mid); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* === HERO === */
+    .hero { padding: 80px 0 68px; border-bottom: 1px solid var(--border); }
+    .status {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono); font-size: 11px; color: var(--text-dim);
+      margin-bottom: 28px; background: var(--surface); border: 1px solid var(--border);
+      padding: 6px 12px; border-radius: 99px;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--green);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100%{ opacity:1; box-shadow:0 0 0 0 rgba(74,222,128,0.4); }
+      50%{ opacity:0.7; box-shadow:0 0 0 5px rgba(74,222,128,0); }
+    }
+    .hero-title {
+      font-size: clamp(26px, 4.5vw, 38px); font-weight: 300;
+      color: var(--accent); line-height: 1.2; margin-bottom: 18px; letter-spacing: -0.02em;
+    }
+    .hero-title span { color: var(--text-mid); }
+    .hero-title .typed-line { display: inline; }
+    .hero-cursor {
+      display: inline-block; width: 3px; height: 1em;
+      background: var(--cyan); vertical-align: text-bottom; margin-left: 2px;
+      animation: blink 1s step-end infinite;
+    }
+    .hero-desc { font-size: 14px; color: var(--text-mid); line-height: 1.85; max-width: 460px; }
+
+    /* === TERMINAL PROMPT === */
+    .terminal-prompt {
+      font-family: var(--mono); font-size: 11px;
+      color: var(--text-dim); margin-bottom: 20px;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .prompt-symbol { color: var(--cyan); opacity: 0.5; }
+
+    /* === SECTIONS === */
+    .section { padding: 60px 0; border-bottom: 1px solid var(--border); }
+    .section-label {
+      font-family: var(--mono); font-size: 10px; color: var(--text-dim);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before { content: '//'; color: var(--border2); }
+    .section-label::after { content: ''; flex:1; height:1px; background: var(--border); }
+
+    /* === ABOUT === */
+    .about-text { font-size: 15px; color: var(--text-mid); line-height: 1.85; }
+    .about-text + .about-text { margin-top: 14px; }
+
+    /* === TECH === */
+    .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tech-tag {
+      font-family: var(--mono); font-size: 11px; color: var(--text-mid);
+      border: 1px solid var(--border); padding: 6px 14px; border-radius: 3px;
+      transition: all 0.25s; cursor: default; position: relative; overflow: hidden;
+    }
+    .tech-tag::before {
+      content: ''; position: absolute; inset: 0;
+      background: var(--cyan); opacity: 0; transition: opacity 0.3s;
+    }
+    .tech-tag:hover { color: var(--accent); border-color: #333; }
+    .tech-tag:hover::before { opacity: 0.04; }
+
+    /* === PROJECTS === */
+    .projects-grid { display: flex; flex-direction: column; }
+    .project-card {
+      padding: 24px 0; border-bottom: 1px solid var(--border);
+      transition: transform 0.15s ease;
+    }
+    .project-card:first-child { border-top: 1px solid var(--border); }
+    .project-card-inner {
+      transition: transform 0.1s ease;
+      transform-style: preserve-3d;
+    }
+    .project-badge {
+      font-family: var(--mono); font-size: 9px; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 99px; border: 1px solid;
+    }
+    .project-badge.live { color: var(--green); border-color: rgba(74,222,128,0.3); background: rgba(74,222,128,0.06); }
+    .project-badge.contrib { color: #7cb9e8; border-color: rgba(124,185,232,0.3); background: rgba(124,185,232,0.06); }
+    .project-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+    .project-name-wrap { display: flex; align-items: center; gap: 8px; }
+    .project-icon { width: 14px; height: 14px; opacity: 0.45; flex-shrink: 0; }
+    .project-name { font-size: 15px; font-weight: 400; color: var(--accent); letter-spacing: -0.01em; }
+    .project-link {
+      font-family: var(--mono); font-size: 11px; color: var(--text-dim);
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+      transition: color 0.2s; white-space: nowrap; margin-left: 16px; padding-top: 2px;
+    }
+    .project-link:hover { color: var(--accent); }
+    .project-desc { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 14px; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .project-tag {
+      font-family: var(--mono); font-size: 10px; color: var(--text-dim);
+      background: var(--bg); border: 1px solid var(--border); padding: 2px 9px; border-radius: 2px;
+    }
+
+    /* === CODE SNIPPET HOVER === */
+    .code-peek {
+      font-family: var(--mono); font-size: 10px; color: var(--text-dim);
+      border-left: 2px solid var(--border2); padding: 10px 14px; margin-bottom: 14px;
+      line-height: 1.9; max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease, opacity 0.4s ease, margin 0.4s ease;
+      opacity: 0;
+    }
+    .project-card:hover .code-peek {
+      max-height: 120px; opacity: 1;
+    }
+    .code-peek .kw { color: #8b8bff; }
+    .code-peek .fn { color: var(--cyan); opacity: 0.7; }
+    .code-peek .str { color: #86efac; }
+    .code-peek .cm { color: var(--text-dim); opacity: 0.6; }
+
+    /* === FOOTER === */
+    footer { padding: 36px 0 52px; display: flex; justify-content: space-between; align-items: center; position: relative; z-index: 1; }
+    footer p { font-family: var(--mono); font-size: 11px; color: var(--text-dim); }
+    .footer-links { display: flex; gap: 20px; }
+    .footer-links a { font-family: var(--mono); font-size: 11px; color: var(--text-dim); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 6px; }
+    .footer-links a:hover { color: var(--accent); }
+
+    /* === REVEAL === */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    .hero { animation: fadeUp 0.7s 0.05s ease both; }
+
+    /* === SCAN LINE === */
+    .scanline {
+      position: fixed; top: -2px; left: 0; right: 0; height: 2px;
+      background: linear-gradient(transparent, rgba(34,211,238,0.08), transparent);
+      z-index: 0; pointer-events: none;
+      animation: scan 8s linear infinite;
+    }
+    @keyframes scan {
+      0% { top: -2px; }
+      100% { top: 100vh; }
+    }
+
+    @media (max-width: 520px) {
+      footer { flex-direction: column; gap: 16px; align-items: flex-start; }
+      .footer-links { flex-wrap: wrap; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="matrix-canvas"></canvas>
+<div class="scanline"></div>
+
+<!-- Floating code snippets -->
+<div class="float-code" id="fc1" style="left:5%;top:30%;">const dev = new Aryan();<br>dev.build(ideas);</div>
+<div class="float-code" id="fc2" style="left:75%;top:60%;">async function learn() {<br>  await explore();<br>}</div>
+<div class="float-code" id="fc3" style="left:60%;top:20%;">import { passion } from 'life';</div>
+<div class="float-code" id="fc4" style="left:20%;top:70%;">while(true) { code(); }</div>
+<div class="float-code" id="fc5" style="right:8%;top:45%;">git commit -m "ship it"</div>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="nav-name">Aryan<span class="nav-cursor"></span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#tech">Tech</a></li>
+      <li><a href="#projects">Projects</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="terminal-prompt">
+      <span class="prompt-symbol">~/portfolio</span>
+      <span style="color:var(--border2)">$</span>
+      <span id="terminal-cmd" style="color:var(--text-dim)"></span>
+    </div>
+    <div class="status"><span class="status-dot"></span>Available for work</div>
+    <h1 class="hero-title">
+      <span class="typed-line" id="typed-name"></span><br>
+      <span id="typed-role" style="color:var(--text-mid)"></span>
+      <span class="hero-cursor" id="hero-cursor"></span>
+    </h1>
+    <p class="hero-desc">I'm a software developer from Kathmandu, Nepal. I have interest in Full Stack Development, Artificial Intelligence, Machine Learning and everything in between.</p>
+  </div>
+
+  <!-- About -->
+  <section class="section reveal" id="about">
+    <div class="section-label">about me</div>
+    <p class="about-text">Based in Kathmandu, Nepal, I build software that is clean, purposeful, and efficient. I enjoy working across the full stack — from crafting thoughtful UIs to designing robust backend systems.</p>
+    <p class="about-text" style="margin-top:14px">Outside of work, I'm always following new technology and exploring what's next. I listen to podcasts and watch movies and series in my free time.</p>
+  </section>
+
+  <!-- Tech -->
+  <section class="section reveal" id="tech">
+    <div class="section-label">technology</div>
+    <div class="tech-grid">
+      <span class="tech-tag">HTML</span>
+      <span class="tech-tag">CSS</span>
+      <span class="tech-tag">JavaScript</span>
+      <span class="tech-tag">Java</span>
+      <span class="tech-tag">Git</span>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section reveal" id="projects">
+    <div class="section-label">projects</div>
+    <div class="projects-grid">
+
+      <!-- AINepal -->
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <div class="project-name-wrap">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="36" height="36" rx="6" stroke="#c8c8c8" stroke-width="2.5"/>
+                <path d="M20 36 L24 24 L28 32 L32 24 L36 36" stroke="#c8c8c8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                <circle cx="28" cy="17" r="2.5" fill="#c8c8c8" opacity="0.6"/>
+              </svg>
+              <span class="project-name">AINepal</span>
+            </div>
+            <a href="https://ainepal.edgeone.app/" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <div class="code-peek">
+            <span class="cm">// Nepal's AI service directory</span><br>
+            <span class="kw">const</span> <span class="fn">directory</span> = <span class="kw">new</span> <span class="fn">AINepal</span>({<br>
+            &nbsp;&nbsp;lang: [<span class="str">'en'</span>, <span class="str">'np'</span>], categories: <span class="str">'all'</span><br>
+            });
+          </div>
+          <p class="project-desc">Nepal's AI services guide — a curated directory connecting Nepali businesses with top AI freelancers. Features bilingual content (English &amp; Nepali), AI service categories, and a step-by-step hiring guide for local entrepreneurs.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">EdgeOne</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shangrila Globe Travels -->
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <div class="project-name-wrap">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="28" cy="28" r="18" stroke="#c8c8c8" stroke-width="2.5"/>
+                <ellipse cx="28" cy="28" rx="8" ry="18" stroke="#c8c8c8" stroke-width="2.5"/>
+                <line x1="10" y1="28" x2="46" y2="28" stroke="#c8c8c8" stroke-width="2"/>
+                <path d="M12 20 Q28 24 44 20" stroke="#c8c8c8" stroke-width="2" fill="none"/>
+                <path d="M12 36 Q28 32 44 36" stroke="#c8c8c8" stroke-width="2" fill="none"/>
+              </svg>
+              <span class="project-name">Shangrila Globe Travels</span>
+            </div>
+            <a href="https://shangrilaglobetravels.edgeone.app" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <div class="code-peek">
+            <span class="cm">// Multi-language trekking agency</span><br>
+            <span class="kw">const</span> <span class="fn">langs</span> = [<span class="str">'en'</span>, <span class="str">'hi'</span>, <span class="str">'zh'</span>, <span class="str">'ja'</span>, <span class="str">'ne'</span>];<br>
+            <span class="fn">site</span>.init({ whatsapp: <span class="kw">true</span>, i18n: langs });
+          </div>
+          <p class="project-desc">A full-featured website for a trekking &amp; tour agency in Kathmandu, Nepal. Built with multi-language support (EN, हिन्दी, 中文, 日本語, नेपाली), WhatsApp contact integration, and destinations across Nepal.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">EdgeOne</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nepal Kishan Organic Farm -->
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <div class="project-name-wrap">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M28 42 L28 22" stroke="#c8c8c8" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M28 30 Q18 26 16 16 Q26 14 32 22 Q34 26 28 30Z" stroke="#c8c8c8" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+                <path d="M28 36 Q38 32 40 20 Q30 18 24 28 Q22 32 28 36Z" stroke="#c8c8c8" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+              </svg>
+              <span class="project-name">Nepal Kishan Organic Farm</span>
+            </div>
+            <a href="https://nepalkishanorg.edgeone.app/" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <div class="code-peek">
+            <span class="cm">// Organic farming showcase</span><br>
+            <span class="fn">farm</span>.showcase({ products: <span class="kw">true</span>, local: <span class="str">'nepal'</span> });<br>
+            <span class="fn">connect</span>(producers, consumers);
+          </div>
+          <p class="project-desc">Building a website for an organic farming business based in Nepal. Designed to showcase their products, farming practices, and connect local consumers with fresh organic produce.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Logistic Automation -->
+      <div class="project-card reveal">
+        <div class="project-card-inner">
+          <div class="project-meta">
+            <div class="project-name-wrap">
+              <svg class="project-icon" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="6" y="18" width="28" height="20" rx="1.5" stroke="#c8c8c8" stroke-width="2.5"/>
+                <path d="M34 24 L50 24 L50 38 L34 38" stroke="#c8c8c8" stroke-width="2.5" stroke-linejoin="round"/>
+                <path d="M34 24 L42 18 L50 24" stroke="#c8c8c8" stroke-width="2.5" stroke-linejoin="round"/>
+                <circle cx="14" cy="40" r="4" stroke="#c8c8c8" stroke-width="2.5"/>
+                <circle cx="42" cy="40" r="4" stroke="#c8c8c8" stroke-width="2.5"/>
+              </svg>
+              <span class="project-name">Logistic Automation</span>
+            </div>
+            <a href="http://103.198.9.185/auth/login" target="_blank" class="project-link">↗ view</a>
+          </div>
+          <div class="code-peek">
+            <span class="cm">// Bug trace & auth debugging</span><br>
+            <span class="kw">try</span> { <span class="fn">auth</span>.verify(token); }<br>
+            <span class="kw">catch</span>(e) { <span class="fn">trace</span>(e); <span class="fn">fix</span>(); }
+          </div>
+          <p class="project-desc">Contributed to a logistic automation web application by identifying bugs, tracing errors, and implementing fixes. Involved in debugging authentication flows and improving overall system stability.</p>
+          <div class="project-stack">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">JavaScript</span>
+            <span class="project-tag">Debugging</span>
+            <span class="project-badge live">● Live</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Aryan · Kathmandu, Nepal</p>
+    <div class="footer-links">
+      <a href="https://github.com/txtaryann-dev" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        github.com/txtaryann-dev
+      </a>
+      <a href="https://instagram.com/aryan.txtt" target="_blank">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        @aryan.txtt
+      </a>
+      <a href="mailto:txt.aryann@gmail.com">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        txt.aryann@gmail.com
+      </a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ===== MATRIX CANVAS ===== */
+(function() {
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  let cols, drops;
+
+  const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノ{}[]()<>=/\\|+-*&^%$#@!;:,.?ABCDEFabcdef';
+
+  function init() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const fontSize = 13;
+    cols = Math.floor(canvas.width / fontSize);
+    drops = Array(cols).fill(1);
+  }
+
+  function draw() {
+    ctx.fillStyle = 'rgba(10,10,10,0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#22d3ee';
+    ctx.font = '13px IBM Plex Mono, monospace';
+    for (let i = 0; i < drops.length; i++) {
+      const char = chars[Math.floor(Math.random() * chars.length)];
+      ctx.fillText(char, i * 13, drops[i] * 13);
+      if (drops[i] * 13 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+
+  init();
+  setInterval(draw, 60);
+  window.addEventListener('resize', init);
+})();
+
+/* ===== FLOATING CODE SNIPPETS ===== */
+(function() {
+  const els = document.querySelectorAll('.float-code');
+  els.forEach((el, i) => {
+    const dur = 14 + i * 4;
+    const delay = i * 3;
+    el.style.animationDuration = dur + 's';
+    el.style.animationDelay = delay + 's';
+  });
+})();
+
+/* ===== TERMINAL CMD TYPEWRITER ===== */
+(function() {
+  const cmd = document.getElementById('terminal-cmd');
+  const text = 'node portfolio.js';
+  let i = 0;
+  function typeCmd() {
+    if (i <= text.length) {
+      cmd.textContent = text.slice(0, i) + (i < text.length ? '_' : '');
+      i++;
+      setTimeout(typeCmd, 80);
+    } else {
+      setTimeout(startHeroType, 400);
+    }
+  }
+  setTimeout(typeCmd, 600);
+})();
+
+/* ===== HERO TYPEWRITER ===== */
+function startHeroType() {
+  const nameEl = document.getElementById('typed-name');
+  const roleEl = document.getElementById('typed-role');
+  const cursor = document.getElementById('hero-cursor');
+
+  const nameLine = 'Aryan —';
+  const roleLine = 'Software Developer.';
+
+  let i = 0;
+  function typeName() {
+    if (i <= nameLine.length) {
+      nameEl.textContent = nameLine.slice(0, i);
+      i++;
+      setTimeout(typeName, 80);
+    } else {
+      setTimeout(typeRole, 200);
+    }
+  }
+
+  let j = 0;
+  function typeRole() {
+    if (j <= roleLine.length) {
+      roleEl.textContent = roleLine.slice(0, j);
+      j++;
+      setTimeout(typeRole, 70);
+    }
+  }
+
+  typeName();
+}
+
+/* ===== SCROLL REVEAL ===== */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach((e, idx) => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.06) + 's';
+  observer.observe(el);
+});
+
+/* ===== 3D CARD TILT ===== */
+document.querySelectorAll('.project-card').forEach(card => {
+  const inner = card.querySelector('.project-card-inner');
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const rotX = ((y - cy) / cy) * -2.5;
+    const rotY = ((x - cx) / cx) * 2.5;
+    inner.style.transform = `perspective(600px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(4px)`;
+  });
+  card.addEventListener('mouseleave', () => {
+    inner.style.transform = 'perspective(600px) rotateX(0) rotateY(0) translateZ(0)';
+  });
+});
+</script>
+</body>
+</html>
