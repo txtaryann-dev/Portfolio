@@ -1,0 +1,16 @@
+{
+  "name": "aryan-portfolio",
+  "version": "1.0.0",
+  "description": "Aryan's full-stack developer portfolio",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "echo 'No build required'",
+    "lint": "echo 'No linting required'",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "three": "^0.185.1"
+  }
+}
